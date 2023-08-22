@@ -76,4 +76,6 @@ bird_subset_new <- bird_subset %>%
   group_by(park_name, survey_month) %>% 
   summarise(total_bird = n()) %>% 
   filter(park_name %in% c("Lindo", "Orme", "Palomino", "Sonrisa"))
+
+##note that the summarise function does a better job of actually simplifying the data. mutate just keeps adding rows
 ```
