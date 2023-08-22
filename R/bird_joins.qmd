@@ -74,6 +74,6 @@ bird_subset_new <- bird_subset %>%
   mutate(survey_month = as.factor(survey_month)) %>% 
   relocate(survey_month, .after = survey_date) %>% 
   group_by(park_name, survey_month) %>% 
-  mutate(total_bird = n()) %>% 
+  summarise(total_bird = n()) %>% 
   filter(park_name %in% c("Lindo", "Orme", "Palomino", "Sonrisa"))
 ```
