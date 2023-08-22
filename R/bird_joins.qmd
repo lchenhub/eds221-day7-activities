@@ -1,0 +1,45 @@
+---
+title: "Day 7 Activities"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(datapasta)
+library(janitor)
+library(here)
+```
+
+## Task 1
+
+```{r}
+bird_observations <- read_csv(here("data", "52_pp52_birds_1.csv"))
+
+sites <- read_csv(here("data", "52_pp52_sites_1.csv"))
+
+surveys <- read_csv(here("data", "52_pp52_surveys_1.csv"))
+
+taxalist <- read_csv(here("data", "52_pp52_taxalist_1.csv"))
+```
+
+```{r}
+birds_subset <- bird_observations %>% 
+  filter(species_id %in% c("BHCO", "RWBL"),
+         site_id %in% c("LI-W", "NU-C"))
+```
+
+### Left join 
+
+```{r}
+birds_left <- birds_subset %>% 
+  left_join(sites, taxalist, by = join_by(site_id))
+```
+
+### Full join
+
+```{r}
+birds_full <- full_join(birds_subset, sites, by = join_by("site_id"))
+```
+
+## 
