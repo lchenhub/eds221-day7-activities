@@ -9,6 +9,7 @@ library(tidyverse)
 library(datapasta)
 library(janitor)
 library(here)
+library(dplyr)
 ```
 
 ## Task 1
@@ -29,7 +30,7 @@ birds_subset <- bird_observations %>%
          site_id %in% c("LI-W", "NU-C"))
 ```
 
-### Left join 
+### Left join
 
 ```{r}
 birds_left <- birds_subset %>% 
@@ -43,3 +44,36 @@ birds_full <- full_join(birds_subset, sites, by = join_by("site_id"))
 ```
 
 ## 
+
+## Task 2
+
+```{r}
+birds <- bird_observations %>% 
+  rename(bird_obs_notes = notes)
+```
+
+```{r}
+
+bird_site <- left_join(birds, sites)
+
+bird_survey <- left_join(bird_site, surveys)
+
+bird_tax <- left_join(bird_survey, taxalist)
+
+
+```
+
+```{r}
+bird_subset <- bird_tax %>% 
+  select(survey_date, common_name, park_name, bird_count)
+```
+
+```{r}
+bird_subset_new <- bird_subset %>% 
+  mutate(survey_month = month(survey_date)) %>% 
+  mutate(survey_month = as.factor(survey_month)) %>% 
+  relocate(survey_month, .after = survey_date) %>% 
+  group_by(park_name, survey_month) %>% 
+  mutate(total_bird = n()) %>% 
+  filter(park_name %in% c("Lindo", "Orme", "Palomino", "Sonrisa"))
+```
